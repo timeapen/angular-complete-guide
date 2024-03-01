@@ -16,11 +16,23 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient, private postService: PostsService) {}
 
   ngOnInit() {
-    this.postService.posts.subscribe(posts => {
-      setTimeout(() => {
-        this.loadedPosts = posts;
-        this.isFetching = false;
-      }, 3000);
+
+    // Examples of different ways to subscribe to an Observable below:  https://rxjs.dev/guide/observer
+
+    // this.postService.posts.subscribe(posts => {
+    //   setTimeout(() => {
+    //     this.loadedPosts = posts;
+    //     this.isFetching = false;
+    //   }, 3000);
+    // });
+
+    this.postService.posts.subscribe({
+      next: (posts: Post[]) => {
+        setTimeout(() => {
+          this.loadedPosts = posts;
+          this.isFetching = false;
+        }, 3000);
+      }
     });
 
     this.fetchPosts();
