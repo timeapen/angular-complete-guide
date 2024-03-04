@@ -15,12 +15,10 @@ export class PostsService {
 
     createAndStorePost(postData: Post) {        
         // Send Http request
-        this.http.post<{ name: string }>(
+        return this.http.post<{ name: string }>(
             this.postsDbUrl,
             postData
-        ).subscribe(response => {
-            console.debug('Response: ', response);
-        });
+        );
     }
 
     fetchPosts() {
