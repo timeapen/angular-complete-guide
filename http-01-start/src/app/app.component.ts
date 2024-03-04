@@ -16,7 +16,12 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient, private postService: PostsService) {}
 
   ngOnInit() {
+    this.setupPostsSubscriptionAndFetchPosts();
 
+    // this.fetchPostsFromObservable();
+  }
+
+  private setupPostsSubscriptionAndFetchPosts() {
     // Examples of different ways to subscribe to an Observable below:  https://rxjs.dev/guide/observer
 
     // this.postService.posts.subscribe(posts => {
@@ -31,7 +36,7 @@ export class AppComponent implements OnInit {
         setTimeout(() => {
           this.loadedPosts = posts;
           this.isFetching = false;
-        }, 3000);
+        }, 1000);
       }
     });
 
@@ -42,12 +47,16 @@ export class AppComponent implements OnInit {
     this.postService.createAndStorePost(postData).subscribe(response => {
       console.debug('Created post: ', response);
       this.fetchPosts();
+
+      // this.fetchPostsFromObservable();
     });
   }
 
   onFetchPosts() {
     // Send Http request
     this.fetchPosts();
+
+    // this.fetchPostsFromObservable();
   }
 
   onClearPosts() {
@@ -61,5 +70,14 @@ export class AppComponent implements OnInit {
   private fetchPosts() {
     this.isFetching = true;
     this.postService.fetchPosts();
+  }
+
+  private fetchPostsFromObservable() {
+    this.isFetching=true;
+    this.postService.fetchPostsObservable().subscribe(posts => {
+      console.debug('Fetched posts via subscription to observable: ', posts);
+      this.loadedPosts = posts;
+      this.isFetching = false;
+    })
   }
 }

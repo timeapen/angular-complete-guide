@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Post } from "./post.model";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { map } from "rxjs/operators";
 
 @Injectable({providedIn: 'root'})
@@ -18,6 +18,24 @@ export class PostsService {
         return this.http.post<{ name: string }>(
             this.postsDbUrl,
             postData
+        );
+    }
+
+    fetchPostsObservable(): Observable<Post[]> {
+        return this.http.get<{ [key: string]: Post }>(
+            this.postsDbUrl
+        ).pipe(
+            map(response => {
+                const posts: Post[] = [];
+
+                for (const key in response) {
+                    if (response.hasOwnProperty(key)) {
+                        posts.push({ ...response[key], id: key });
+                    }
+                }
+
+                return posts;
+            })
         );
     }
 
