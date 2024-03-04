@@ -49,6 +49,10 @@ export class AppComponent implements OnInit {
 
   onClearPosts() {
     // Send Http request
+    this.postService.deletePosts().subscribe(response => {
+      console.debug('Deleted posts: ', response);
+      this.fetchPosts();
+    });
   }
 
   private fetchPosts() {
