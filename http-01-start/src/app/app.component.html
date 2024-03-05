@@ -52,7 +52,7 @@
   <div class="row">
 
     <div class="col-xs-12 col-md-6 col-md-offset-3">
-      <mat-spinner *ngIf="isFetching"></mat-spinner>
+      <mat-spinner *ngIf="isFetching && !error"></mat-spinner>
       <p *ngIf="loadedPosts.length < 1 && !isFetching">No posts available!</p>
       <ul *ngIf="loadedPosts.length > 0 && !isFetching" class="list-group">
         <li class="list-group-item" *ngFor="let post of loadedPosts">
@@ -60,7 +60,10 @@
           <p>{{ post.content }}</p>
         </li>
       </ul>
-  
+      <div class="alert alert-danger" *ngIf="error">
+        <h1>An Error Occured!</h1>
+        <p>{{ error.message }}</p>
+      </div>
     </div>
   </div>
 </div>

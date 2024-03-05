@@ -42,22 +42,27 @@ export class PostsService {
     fetchPosts() {
         this.http.get<{ [key: string]: Post }>(
             this.postsDbUrl
-            ).pipe(
-              map(response => {
+        ).pipe(
+            map(response => {
                 const posts: Post[] = [];
-      
+
                 for (const key in response) {
-                  if(response.hasOwnProperty(key)) {
-                    posts.push({...response[key], id: key});
-                  }
+                    if (response.hasOwnProperty(key)) {
+                        posts.push({ ...response[key], id: key });
+                    }
                 }
-      
+
                 return posts;
-              })
-            )
-            .subscribe(posts => {
-                this.posts.next(posts);
-            });
+            })
+        )
+            .subscribe(
+                posts => {
+                    this.posts.next(posts);
+                },
+                error => {
+                    console.debug('Error: ', error);
+                    this.posts.error(error)
+                });
     }
 
     deletePosts() {

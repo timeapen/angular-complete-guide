@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators'
 import { Post } from './post.model';
 import { PostsService } from './posts.service';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import { PostsService } from './posts.service';
 export class AppComponent implements OnInit {
   loadedPosts: Post[] = [];
   isFetching: boolean = false;
+  error: any = null;
 
   constructor(private http: HttpClient, private postService: PostsService) {}
 
@@ -37,6 +39,9 @@ export class AppComponent implements OnInit {
           this.loadedPosts = posts;
           this.isFetching = false;
         }, 1000);
+      },
+      error: (error: any) => {
+        this.error = error;
       }
     });
 
@@ -74,10 +79,14 @@ export class AppComponent implements OnInit {
 
   private fetchPostsFromObservable() {
     this.isFetching=true;
-    this.postService.fetchPostsObservable().subscribe(posts => {
+    this.postService.fetchPostsObservable().subscribe(
+      posts => {
       console.debug('Fetched posts via subscription to observable: ', posts);
       this.loadedPosts = posts;
       this.isFetching = false;
+    },
+    error => {
+      this.error = error.message;
     })
   }
 }
