@@ -10,6 +10,7 @@ export class PostsService {
    private postsDbUrl: string = 'https://ng-complete-guide-3a355-default-rtdb.firebaseio.com/posts.json';
 
     public posts: Subject<Post[]> = new Subject<Post[]>();
+    public errors: Subject<any> = new Subject<any>();
 
     constructor(private http: HttpClient) {}
 
@@ -61,7 +62,7 @@ export class PostsService {
                 },
                 error => {
                     console.debug('Error: ', error);
-                    this.posts.error(error)
+                    this.errors.next(error);
                 });
     }
 

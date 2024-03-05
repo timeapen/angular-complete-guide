@@ -1,21 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators'
 import { Post } from './post.model';
 import { PostsService } from './posts.service';
-import { throwError } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+  postsSubscription: Subscription;
+  errorsSubscription: Subscription;
   loadedPosts: Post[] = [];
   isFetching: boolean = false;
   error: any = null;
 
-  constructor(private http: HttpClient, private postService: PostsService) {}
+  constructor(private http: HttpClient, private postService: PostsService) { }
 
   ngOnInit() {
     this.setupPostsSubscriptionAndFetchPosts();
@@ -33,7 +35,7 @@ export class AppComponent implements OnInit {
     //   }, 3000);
     // });
 
-    this.postService.posts.subscribe({
+    this.postsSubscription = this.postService.posts.subscribe({
       next: (posts: Post[]) => {
         setTimeout(() => {
           this.loadedPosts = posts;
@@ -41,9 +43,19 @@ export class AppComponent implements OnInit {
         }, 1000);
       },
       error: (error: any) => {
-        this.error = error;
+        setTimeout(() => {
+          this.error = error;
+          this.isFetching = false;
+        }, 1000)
       }
     });
+
+    this.errorsSubscription = this.postService.errors.subscribe(error => {
+      setTimeout(() => {
+        this.error = error;
+        this.isFetching = false;
+      }, 1000);
+    })
 
     this.fetchPosts();
   }
@@ -74,19 +86,25 @@ export class AppComponent implements OnInit {
 
   private fetchPosts() {
     this.isFetching = true;
+    this.error = null;
     this.postService.fetchPosts();
   }
 
   private fetchPostsFromObservable() {
-    this.isFetching=true;
+    this.isFetching = true;
     this.postService.fetchPostsObservable().subscribe(
       posts => {
-      console.debug('Fetched posts via subscription to observable: ', posts);
-      this.loadedPosts = posts;
-      this.isFetching = false;
-    },
-    error => {
-      this.error = error.message;
-    })
+        console.debug('Fetched posts via subscription to observable: ', posts);
+        this.loadedPosts = posts;
+        this.isFetching = false;
+      },
+      error => {
+        this.error = error.message;
+      })
   }
+
+  ngOnDestroy(): void {
+    this.postsSubscription.unsubscribe();
+  }
+
 }
