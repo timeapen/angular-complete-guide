@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Post } from "./post.model";
-import { Observable, Subject } from "rxjs";
-import { map } from "rxjs/operators";
+import { Observable, Subject, throwError } from "rxjs";
+import { catchError, map } from "rxjs/operators";
 
 @Injectable({providedIn: 'root'})
 export class PostsService {
@@ -54,6 +54,10 @@ export class PostsService {
                 }
 
                 return posts;
+            }),
+            catchError(error => {
+                console.debug('Caught Error from server: ', error);
+                return throwError(error);
             })
         )
             .subscribe(
@@ -61,7 +65,7 @@ export class PostsService {
                     this.posts.next(posts);
                 },
                 error => {
-                    console.debug('Error: ', error);
+                    console.debug('Broadcating Error to UI: ', error);
                     this.errors.next(error);
                 });
     }
