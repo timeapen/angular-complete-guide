@@ -1,8 +1,8 @@
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpEventType, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Post } from "./post.model";
 import { Observable, Subject, throwError } from "rxjs";
-import { catchError, map } from "rxjs/operators";
+import { catchError, map, tap } from "rxjs/operators";
 
 @Injectable({providedIn: 'root'})
 export class PostsService {
@@ -18,7 +18,14 @@ export class PostsService {
         // Send Http request
         return this.http.post<{ name: string }>(
             this.postsDbUrl,
-            postData
+            postData,
+            {
+                observe: 'response'
+            }
+        ).pipe(
+            tap(response => {
+                console.debug('Create and store post: ', response);
+            })
         );
     }
 
@@ -64,6 +71,7 @@ export class PostsService {
                 return posts;
             }),
             catchError(error => {
+                // can do other things in catchError befor rethrowing like sending to an analytics server or logging (i.e. Splunk)
                 console.debug('Caught Error from server: ', error);
                 return throwError(error);
             })
@@ -80,7 +88,19 @@ export class PostsService {
 
     deletePosts() {
         return this.http.delete(
-            this.postsDbUrl
+            this.postsDbUrl,
+            {
+                observe: 'events'
+            }
+        ).pipe(
+            tap(event => {
+                console.debug('Event: ', event);
+                if(event.type === HttpEventType.Sent) {
+                    console.debug('Got sent event');
+                } else if (event.type === HttpEventType.Response) {
+                    console.debug('Got response event');
+                }
+            })
         );
     }
 }
