@@ -56,7 +56,8 @@ export class PostsService {
             this.postsDbUrl,
             {
                 headers: new HttpHeaders({'Custom-Header': 'Sid-Santo-baby'}),
-                params: params
+                params: params,
+                responseType: 'json'
             }
         ).pipe(
             map(response => {
@@ -90,15 +91,16 @@ export class PostsService {
         return this.http.delete(
             this.postsDbUrl,
             {
-                observe: 'events'
+                observe: 'events',
+                responseType: 'text'
             }
         ).pipe(
             tap(event => {
                 console.debug('Event: ', event);
                 if(event.type === HttpEventType.Sent) {
-                    console.debug('Got sent event');
+                    console.debug('Request was sent event');
                 } else if (event.type === HttpEventType.Response) {
-                    console.debug('Got response event');
+                    console.debug('Recieved response event');
                 }
             })
         );
