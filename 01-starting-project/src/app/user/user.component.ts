@@ -21,4 +21,9 @@ export class UserComponent {
     return "assets/users/" + this.selectedUser.avatar;
   }
 
+  onSelectedUser(click: Event) {
+    console.debug("Got event: ", click);
+    console.debug("Selected User: ", this.selectedUser);
+  }
+
 }
