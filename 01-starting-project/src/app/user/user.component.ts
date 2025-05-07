@@ -15,6 +15,8 @@ export class UserComponent {
 
   // @Output() select = new EventEmitter<string>();
 
+  // convenience method to repleace @Output() select = new EventEmitter<string>();
+  // this is not a Signal!
   select = output<string>();
 
   // avatar = input.required<string>();
