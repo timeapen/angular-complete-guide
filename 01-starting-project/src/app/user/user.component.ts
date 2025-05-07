@@ -17,7 +17,6 @@ export class UserComponent {
 
   onSelectedUser(click: Event) {
     console.debug("Got event: ", click);
-    this.avatar.
   }
 
   // get imagePath(): string {
