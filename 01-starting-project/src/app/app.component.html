@@ -1,8 +1,8 @@
-<app-header/>
+<app-header />
 <main>
   <ul id="users" *ngFor="let user of users;">
     <li>
-      <app-user [avatar]="user.avatar" [name]="user.name"></app-user>
+      <app-user [id]="user.id" [avatar]="user.avatar" [name]="user.name" (select)="onSelectUser($event)"></app-user>
     </li>
   </ul>
 </main>

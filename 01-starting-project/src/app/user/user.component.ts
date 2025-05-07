@@ -1,4 +1,4 @@
-import { Component, Input, computed, input } from '@angular/core';
+import { Component, EventEmitter, Input, Output, computed, input } from '@angular/core';
 
 @Component({
   selector: 'app-user',
@@ -9,22 +9,31 @@ import { Component, Input, computed, input } from '@angular/core';
 })
 export class UserComponent {
 
-  // @Input({required: true}) avatar!: string;
-  // @Input({required: true}) name!: string;
+  @Input({required: true}) id!: string;
+  @Input({required: true}) avatar!: string;
+  @Input({required: true}) name!: string;
 
-  avatar = input.required<string>();
-  name = input.required<string>();
+  @Output() select = new EventEmitter<string>();
+
+  // avatar = input.required<string>();
+  // name = input.required<string>();
 
   onSelectedUser(click: Event) {
     console.debug("Got event: ", click);
+    this.select.emit(this.id);
   }
 
-  // get imagePath(): string {
-  //   return 'assets/users/' + this.avatar;
-  // }
+  get imagePath(): string {
+    return 'assets/users/' + this.avatar;
+  }
 
-  imagePath = computed(() => {
-    return 'assets/users/' + this.avatar();
-  })
+
+  // This is a computed property that returns the path to the user's avatar image.
+  // It uses the avatar property to construct the path.
+  // The computed property is a function that returns a string.
+  // The computed property is required to compute return values from Signals
+  // imagePath = computed(() => {
+  //   return 'assets/users/' + this.avatar();
+  // })
 
 }
