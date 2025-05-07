@@ -13,11 +13,11 @@ export class UserComponent {
   @Input({required: true}) avatar!: string;
   @Input({required: true}) name!: string;
 
-  // @Output() select = new EventEmitter<string>();
+  @Output() select = new EventEmitter<string>();
 
   // convenience method to repleace @Output() select = new EventEmitter<string>();
   // this is not a Signal!
-  select = output<string>();
+  // select = output<string>();
 
   // avatar = input.required<string>();
   // name = input.required<string>();

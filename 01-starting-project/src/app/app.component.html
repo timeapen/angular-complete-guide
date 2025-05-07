@@ -1,8 +1,11 @@
 <app-header />
 <main>
-  <ul id="users" *ngFor="let user of users;">
-    <li>
+  <ul id="users">
+    <li *ngFor="let user of users;">
       <app-user [id]="user.id" [avatar]="user.avatar" [name]="user.name" (select)="onSelectUser($event)"></app-user>
     </li>
   </ul>
+
+  <app-tasks [name] = "selectedUser.name!" ></app-tasks>
+
 </main>
