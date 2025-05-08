@@ -9,9 +9,11 @@ import { Component, EventEmitter, Input, Output, computed, input, output } from 
 })
 export class UserComponent {
 
-  @Input({required: true}) id!: string;
-  @Input({required: true}) avatar!: string;
-  @Input({required: true}) name!: string;
+  @Input({required: true}) user!: {
+    id: string;
+    avatar: string;
+    name: string;
+  };
 
   @Output() select = new EventEmitter<string>();
 
@@ -24,11 +26,11 @@ export class UserComponent {
 
   onSelectedUser(click: Event) {
     console.debug("Got event: ", click);
-    this.select.emit(this.id);
+    this.select.emit(this.user.id);
   }
 
   get imagePath(): string {
-    return 'assets/users/' + this.avatar;
+    return 'assets/users/' + this.user.avatar;
   }
 
 
