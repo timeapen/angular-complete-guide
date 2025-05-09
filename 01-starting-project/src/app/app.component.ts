@@ -14,7 +14,7 @@ import { TasksComponent } from './tasks/tasks.component';
 })
 export class AppComponent {
 
-  selectedUserId: string = 'u1';
+  selectedUserId?: string;
 
   users = DUMMY_USERS;
 
@@ -27,8 +27,9 @@ export class AppComponent {
   //   return item.id;
   // }
 
-  get userId() {
-    return this.selectedUser!.id
+  getUserId(item: { id: string}) {
+    console.debug('getUserId: ', item);
+    return item.id
   }
 
   onSelectUser(id: string) {

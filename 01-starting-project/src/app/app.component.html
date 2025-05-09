@@ -1,21 +1,26 @@
 <app-header />
 <main>
   
-  <!-- legacy angular ngFor -->
+  <!-- legacy angular ngFor; ngFor as a structural directive -->
   <!-- <ul id="users">
     <li *ngFor="let user of users; trackBy: selectedUserToDisplay">
       <app-user [user]="user" (select)="onSelectUser($event)"></app-user>
     </li>
   </ul> -->
 
+  <!-- @for and @if were introduced with Ng 17 -->
   <ul id="users">
-    @for (user of users; track userId;) {
+    @for (user of users; track getUserId(user)) {
       <li>
         <app-user [user]="user" (select)="onSelectUser($event)"></app-user>
       </li>
     }
   </ul>
 
-  <app-tasks [name] = "selectedUser?.name" ></app-tasks>
+  @if (selectedUser) {
+    <app-tasks [name] = "selectedUser.name" ></app-tasks>
+  } @else {
+    <p id="fallback">Select a user to see their tasks</p>
+  }
 
 </main>
