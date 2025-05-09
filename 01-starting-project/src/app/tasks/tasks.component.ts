@@ -10,5 +10,7 @@ import { Component, Input } from '@angular/core';
 export class TasksComponent {
 
   @Input() name?: string;
+    // @Input({required: true}) name!: string;
+
 
 }
