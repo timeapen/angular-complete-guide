@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { HeaderComponent } from './header/header.component';
 import { UserComponent } from './user/user.component';
 import { DUMMY_USERS } from './dummy-users';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { TasksComponent } from './tasks/tasks.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HeaderComponent, UserComponent, TasksComponent, CommonModule],
+  imports: [HeaderComponent, UserComponent, TasksComponent, NgFor, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -23,9 +23,9 @@ export class AppComponent {
   }
 
   // // example of using a function to get the selected user for legacy *ngFor
-  // selectedUserToDisplay(index: any, item: { id: any; }) {
-  //   return item.id;
-  // }
+  selectedUserToDisplay(index: any, item: { id: any; }) {
+    return item.id;
+  }
 
   getUserId(item: { id: string}) {
     console.debug('getUserId: ', item);
