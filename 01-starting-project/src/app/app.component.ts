@@ -22,6 +22,15 @@ export class AppComponent {
     return this.users.find((user) => user.id === this.selectedUserId);
   }
 
+  // // example of using a function to get the selected user for legacy *ngFor
+  // selectedUserToDisplay(index: any, item: { id: any; }) {
+  //   return item.id;
+  // }
+
+  get userId() {
+    return this.selectedUser!.id
+  }
+
   onSelectUser(id: string) {
     console.debug('Selected user: ', id);
     this.selectedUserId = id;

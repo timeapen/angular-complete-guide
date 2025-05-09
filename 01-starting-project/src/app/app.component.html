@@ -1,9 +1,19 @@
 <app-header />
 <main>
-  <ul id="users">
-    <li *ngFor="let user of users;">
+  
+  <!-- legacy angular ngFor -->
+  <!-- <ul id="users">
+    <li *ngFor="let user of users; trackBy: selectedUserToDisplay">
       <app-user [user]="user" (select)="onSelectUser($event)"></app-user>
     </li>
+  </ul> -->
+
+  <ul id="users">
+    @for (user of users; track userId;) {
+      <li>
+        <app-user [user]="user" (select)="onSelectUser($event)"></app-user>
+      </li>
+    }
   </ul>
 
   <app-tasks [name] = "selectedUser?.name" ></app-tasks>
