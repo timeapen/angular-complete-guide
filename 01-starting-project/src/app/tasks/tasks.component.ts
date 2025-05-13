@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { TaskComponent } from "./task/task.component";
+import { Task } from './task/task.model';
 
 @Component({
   selector: 'app-tasks',
@@ -10,7 +11,7 @@ import { TaskComponent } from "./task/task.component";
 })
 export class TasksComponent {
 
-  private tasks = [
+  private tasks: Task[] = [
     {
       id: 't1',
       userId: 'u1',
@@ -42,6 +43,15 @@ export class TasksComponent {
 
     get userTasks() {
       return this.tasks.filter((task) => task.userId === this.userId);
+    }
+
+    onCompleteTask(id: string) {
+      // let completed = this.tasks.findIndex((task) => task.id === id);
+      // if (completed !== -1) {
+      //   this.tasks.splice(completed, 1);
+      // }
+
+      this.tasks = this.tasks.filter((task) => task.id !== id);
     }
 
 }
