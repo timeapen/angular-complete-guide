@@ -9,11 +9,11 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class AddTaskComponent {
 
-  @Output() cancelAddTask = new EventEmitter<boolean>();
+  @Output() cancelAddTask = new EventEmitter<void>();
 
   onCancel() {
     console.debug('Cancel add task');
-    this.cancelAddTask.emit(false);
+    this.cancelAddTask.emit();
   }
 
 }
