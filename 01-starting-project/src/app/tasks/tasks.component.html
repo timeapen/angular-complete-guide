@@ -7,7 +7,7 @@
     </header>
 
     @if (addTask) {
-        <app-add-task />
+        <app-add-task (cancelAddTask)="onCancelAddTask($event)" />
     }
 
     <ul>

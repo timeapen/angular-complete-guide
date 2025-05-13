@@ -61,4 +61,9 @@ export class TasksComponent {
       this.addTask = true;
     }
 
+    onCancelAddTask($event: boolean) {
+      console.debug('Got cancel add task on tasks page: ', $event);
+      this.addTask = $event;
+    }
+
 }
