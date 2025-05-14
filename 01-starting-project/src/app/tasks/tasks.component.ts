@@ -66,4 +66,9 @@ export class TasksComponent {
       this.addTask = false;
     }
 
+    onSubmitAddTask(task: Task) {
+      this.tasks.push(task);
+      this.addTask = false;
+    }
+
 }
