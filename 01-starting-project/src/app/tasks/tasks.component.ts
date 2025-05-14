@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TaskComponent } from "./task/task.component";
 import { Task } from './task/task.model';
 import { AddTaskComponent } from "./add-task/add-task.component";
+import { NewTask } from './add-task/new-task.model';
 
 @Component({
   selector: 'app-tasks',
@@ -66,7 +67,16 @@ export class TasksComponent {
       this.addTask = false;
     }
 
-    onSubmitAddTask(task: Task) {
+    onSubmitAddTask(newTaskData: NewTask) {
+
+      let task: Task = {
+        id: newTaskData.id,
+        userId: this.userId,
+        title: newTaskData.title,
+        summary: newTaskData.summary,
+        dueDate: newTaskData.dueDate
+      };
+
       this.tasks.push(task);
       this.addTask = false;
     }

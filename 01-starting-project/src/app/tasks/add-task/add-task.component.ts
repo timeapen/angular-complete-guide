@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
-import { FormsModule, NgModel } from '@angular/forms';
-import { Task } from '../task/task.model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NewTask } from './new-task.model';
+
+
 
 @Component({
   selector: 'app-add-task',
@@ -11,10 +13,8 @@ import { Task } from '../task/task.model';
 })
 export class AddTaskComponent {
 
-  @Input({required: true}) userId!: string;
-
   @Output() cancelAddTask = new EventEmitter<void>();
-  @Output() submitAddTask = new EventEmitter<Task>();
+  @Output() submitAddTask = new EventEmitter<NewTask>();
   
   enteredTitle: string = '';
   enteredSummary: string = '';
@@ -31,9 +31,8 @@ export class AddTaskComponent {
   }
 
   onSubmitAddTask() {
-    let task: Task = {
+    let task: NewTask = {
       id: Math.random().toString(),
-      userId: this.userId,
       title: this.enteredTitle,
       summary: this.enteredSummary,
       dueDate: this.enteredDueDate
