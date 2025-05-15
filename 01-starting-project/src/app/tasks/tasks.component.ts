@@ -32,8 +32,7 @@ export class TasksComponent implements OnInit {
   }
 
   onCompleteTask(id: string) {
-    this.tasksService.completeTask(id);
-    this.tasks = this.tasks.filter((task) => task.id !== id);
+    this.tasksService.removeTask(id);
   }
 
   onAddTask() {

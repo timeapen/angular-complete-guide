@@ -39,7 +39,7 @@ describe('TasksService', () => {
   });
 
   it('should complete a task', () => {
-    service.completeTask('t1');
+    service.removeTask('t1');
 
     service.getTasks().subscribe((tasks) => {
       expect(tasks.length).toBe(2); // One task removed

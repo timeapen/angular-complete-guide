@@ -41,19 +41,19 @@ export class TasksService {
     this.tasks.push(newTask);
   }
 
-  completeTask(taskId: string): void {
+  removeTask(taskId: string): void {
     this.tasks = this.tasks.filter((task) => task.id !== taskId);
   }
 
-    addNewTask(newTaskData: NewTask, userId: string) {
-      const task: Task = {
-        id: newTaskData.id,
-        userId: userId,
-        title: newTaskData.title,
-        summary: newTaskData.summary,
-        dueDate: newTaskData.dueDate,
-      };
-  
-      this.addTask(task);
-    }
+  addNewTask(newTaskData: NewTask, userId: string) {
+    const task: Task = {
+      id: newTaskData.id,
+      userId: userId,
+      title: newTaskData.title,
+      summary: newTaskData.summary,
+      dueDate: newTaskData.dueDate,
+    };
+
+    this.addTask(task);
+  }
 }
