@@ -4,11 +4,13 @@ import { Task } from './task/task.model';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { NewTask } from './add-task/new-task.model';
 import { TasksService } from './tasks.service';
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [TaskComponent, AddTaskComponent],
+  imports: [TaskComponent, AddTaskComponent, AsyncPipe],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',
 })
@@ -27,8 +29,8 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  get userTasks() {
-    return this.tasks.filter((task) => task.userId === this.userId);
+  get userTasks$(): Observable<Task[]> {
+    return this.tasksService.getTasksForUser(this.userId);
   }
 
   onCompleteTask(id: string) {

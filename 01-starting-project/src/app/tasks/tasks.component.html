@@ -12,7 +12,7 @@
 
     <ul>
 
-        @for (task of userTasks; track task.id) {
+        @for (task of (userTasks$ | async); track task.id) {
             <li>
                 <app-task [task]=task (complete)="onCompleteTask($event)" />
             </li>

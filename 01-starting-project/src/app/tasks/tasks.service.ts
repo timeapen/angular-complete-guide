@@ -37,6 +37,10 @@ export class TasksService {
     return of(this.tasks);
   }
 
+  getTasksForUser(userId: string):  Observable<Task[]> {
+    return of(this.tasks.filter((task) => task.userId === userId));
+  }
+
   private addTask(newTask: Task): void {
     this.tasks.push(newTask);
   }
