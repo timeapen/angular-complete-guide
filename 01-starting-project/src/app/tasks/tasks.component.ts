@@ -1,84 +1,60 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { TaskComponent } from "./task/task.component";
+import { Component, Input, OnInit } from '@angular/core';
+import { TaskComponent } from './task/task.component';
 import { Task } from './task/task.model';
-import { AddTaskComponent } from "./add-task/add-task.component";
+import { AddTaskComponent } from './add-task/add-task.component';
 import { NewTask } from './add-task/new-task.model';
+import { TasksService } from './tasks.service';
 
 @Component({
   selector: 'app-tasks',
   standalone: true,
   imports: [TaskComponent, AddTaskComponent],
   templateUrl: './tasks.component.html',
-  styleUrl: './tasks.component.css'
+  styleUrl: './tasks.component.css',
 })
-export class TasksComponent {
+export class TasksComponent implements OnInit {
+  tasks: Task[] = [];
+  @Input({ required: true }) name!: string;
+  @Input({ required: true }) userId!: string;
 
-  private tasks: Task[] = [
-    {
-      id: 't1',
-      userId: 'u1',
-      title: 'Master Angular',
-      summary:
-        'Learn all the basic and advanced features of Angular & how to apply them.',
-      dueDate: '2025-12-31',
-    },
-    {
-      id: 't2',
-      userId: 'u3',
-      title: 'Build first prototype',
-      summary: 'Build a first prototype of the online shop website',
-      dueDate: '2024-05-31',
-    },
-    {
-      id: 't3',
-      userId: 'u3',
-      title: 'Prepare issue template',
-      summary:
-        'Prepare and describe an issue template which will help with project management',
-      dueDate: '2024-06-15',
-    },
-  ]
+  addTask: boolean = false;
 
-  // @Input() name?: string;
-    @Input({required: true}) name!: string;
-    @Input({required: true}) userId!: string;
+  constructor(private tasksService: TasksService) {}
 
-    addTask: boolean = false;
+  ngOnInit(): void {
+    this.tasksService.getTasks().subscribe((tasks) => {
+      this.tasks = tasks;
+    });
+  }
 
-    get userTasks() {
-      return this.tasks.filter((task) => task.userId === this.userId);
-    }
+  get userTasks() {
+    return this.tasks.filter((task) => task.userId === this.userId);
+  }
 
-    onCompleteTask(id: string) {
-      // let completed = this.tasks.findIndex((task) => task.id === id);
-      // if (completed !== -1) {
-      //   this.tasks.splice(completed, 1);
-      // }
+  onCompleteTask(id: string) {
+    this.tasksService.completeTask(id);
+    this.tasks = this.tasks.filter((task) => task.id !== id);
+  }
 
-      this.tasks = this.tasks.filter((task) => task.id !== id);
-    }
+  onAddTask() {
+    this.addTask = true;
+  }
 
-    onAddTask() {
-      this.addTask = true;
-    }
+  onCancelAddTask() {
+    console.debug('Got cancel add task on tasks page.');
+    this.addTask = false;
+  }
 
-    onCancelAddTask() {
-      console.debug('Got cancel add task on tasks page.');
-      this.addTask = false;
-    }
+  onSubmitAddTask(newTaskData: NewTask) {
+    const task: Task = {
+      id: newTaskData.id,
+      userId: this.userId,
+      title: newTaskData.title,
+      summary: newTaskData.summary,
+      dueDate: newTaskData.dueDate,
+    };
 
-    onSubmitAddTask(newTaskData: NewTask) {
-
-      let task: Task = {
-        id: newTaskData.id,
-        userId: this.userId,
-        title: newTaskData.title,
-        summary: newTaskData.summary,
-        dueDate: newTaskData.dueDate
-      };
-
-      this.tasks.push(task);
-      this.addTask = false;
-    }
-
+    this.tasksService.addNewTask(task, this.userId)
+    this.addTask = false;
+  }
 }
